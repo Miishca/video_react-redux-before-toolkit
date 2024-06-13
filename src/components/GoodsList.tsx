@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { actions as goodsActions } from '../features/goods';
 import { fetchGoods } from '../services/api';
+import { Loader } from './Loader';
 
 export const GoodsList = () => {
   const [newGood, setNewGood] = useState('');
@@ -24,8 +25,26 @@ export const GoodsList = () => {
   };
 
   useEffect(() => {
-    fetchGoods().then();
+    dispatch(goodsActions.setLoading(true));
+    fetchGoods()
+      .then((goodsFromServer) => {
+        dispatch(goodsActions.set(goodsFromServer));
+      })
+      .catch(() => {
+        dispatch(goodsActions.setError('Something went wrong'));
+      })
+      .finally(() => {
+        dispatch(goodsActions.setLoading(false));
+      });
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <section className='goods'>

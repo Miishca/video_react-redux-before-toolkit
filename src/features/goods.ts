@@ -17,6 +17,15 @@ const goodsSlice = createSlice({
   name: 'goods',
   initialState,
   reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+    set: (state, action: PayloadAction<string[]>) => {
+      state.goods = action.payload;
+    },
     add: (state, action: PayloadAction<string>) => {
       state.goods.push(action.payload);
     },
