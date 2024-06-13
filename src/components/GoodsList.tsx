@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../app/hooks';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { actions as goodsActions } from '../features/goods';
+import { fetchGoods } from '../services/api';
 
 export const GoodsList = () => {
   const [newGood, setNewGood] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const goods = useAppSelector(state => state.goods);
 
   const addGood = (goodToAdd: string) => dispatch(goodsActions.add(goodToAdd));
