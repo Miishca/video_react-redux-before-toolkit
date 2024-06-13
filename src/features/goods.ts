@@ -1,18 +1,31 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const initialState: string[] = [];
+type GoodsState = {
+  goods: string[];
+  loading: boolean;
+  error: string;
+}
+
+
+const initialState: GoodsState = {
+  goods: [],
+  loading: false,
+  error: '',
+};
 
 const goodsSlice = createSlice({
   name: 'goods',
   initialState,
   reducers: {
-    add: (goods, action: PayloadAction<string>) => {
-      goods.push(action.payload);
+    add: (state, action: PayloadAction<string>) => {
+      state.goods.push(action.payload);
     },
-    take: (goods, action: PayloadAction<string>) => {
-      return goods.filter(good => good !== action.payload);
+    take: (state, action: PayloadAction<string>) => {
+      state.goods = state.goods.filter(good => good !== action.payload);
     },
-    clear: () => [],
+    clear: (state) => {
+      state.goods = [];
+    },
   },
 });
 

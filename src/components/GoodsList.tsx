@@ -6,10 +6,11 @@ import { fetchGoods } from '../services/api';
 export const GoodsList = () => {
   const [newGood, setNewGood] = useState('');
   const dispatch = useAppDispatch();
-  const goods = useAppSelector(state => state.goods);
+  const { goods, loading, error } = useAppSelector((state) => state.goods);
 
   const addGood = (goodToAdd: string) => dispatch(goodsActions.add(goodToAdd));
-  const removeGood = (goodToRemove: string) => dispatch(goodsActions.take(goodToRemove));
+  const removeGood = (goodToRemove: string) =>
+    dispatch(goodsActions.take(goodToRemove));
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -22,26 +23,27 @@ export const GoodsList = () => {
     setNewGood('');
   };
 
+  useEffect(() => {
+    fetchGoods().then();
+  }, []);
+
   return (
-    <section className="goods">
+    <section className='goods'>
       <h2>Goods:</h2>
 
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
+          type='text'
           value={newGood}
-          onChange={e => setNewGood(e.target.value)}
+          onChange={(e) => setNewGood(e.target.value)}
         />
         <button>Add</button>
       </form>
 
       <ul>
-        {goods.map(good => (
+        {goods.map((good) => (
           <li key={good}>
-            <button
-              onClick={() => removeGood(good)} 
-              className="delete"
-            />
+            <button onClick={() => removeGood(good)} className='delete' />
 
             {good}
           </li>
