@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { actions as goodsActions } from '../features/goods';
-import { fetchGoods } from '../services/api';
+// import { actions as goodsActions } from '../features/goods';
+import { add, take, init } from '../features/goods';
 import { Loader } from './Loader';
 
 export const GoodsList = () => {
@@ -9,9 +9,9 @@ export const GoodsList = () => {
   const dispatch = useAppDispatch();
   const { goods, loading, error } = useAppSelector((state) => state.goods);
 
-  const addGood = (goodToAdd: string) => dispatch(goodsActions.add(goodToAdd));
+  const addGood = (goodToAdd: string) => dispatch(add(goodToAdd));
   const removeGood = (goodToRemove: string) =>
-    dispatch(goodsActions.take(goodToRemove));
+    dispatch(take(goodToRemove));
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,17 +25,7 @@ export const GoodsList = () => {
   };
 
   useEffect(() => {
-    dispatch(goodsActions.setLoading(true));
-    fetchGoods()
-      .then((goodsFromServer) => {
-        dispatch(goodsActions.set(goodsFromServer));
-      })
-      .catch(() => {
-        dispatch(goodsActions.setError('Something went wrong'));
-      })
-      .finally(() => {
-        dispatch(goodsActions.setLoading(false));
-      });
+    dispatch(init());
   }, []);
 
   if (loading) {
